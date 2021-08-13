@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "webpack serve --config webpack.dev.js",
+    "start": "webpack serve --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "check-file-size": "yarn node ./scripts/check-file-size.js",
     "build-zipped": "yarn run build && yarn node ./scripts/zip-file.js",

@@ -7,6 +7,6 @@ module.exports = merge(common, {
 		contentBase: './dist',
 		hot: false,
 		inline: false,
-		host: "0.0.0.0"
+		host: "localhost"
   },
 });
