@@ -8,7 +8,10 @@
     "esModuleInterop": true,
     "paths": {
       "~*": ["./*"]
-    }
+    },
+    "types": [
+      "babylonjs"
+    ]
   },
   "include": ["src/**/*", "typedefs/*"]
 }

@@ -22,5 +22,8 @@
     "webpack-cli": "^4.0.0",
     "webpack-dev-server": "^3.0.0",
     "webpack-merge": "^5.1.1"
+  },
+  "dependencies": {
+    "babylonjs": "^4.2.0"
   }
 }

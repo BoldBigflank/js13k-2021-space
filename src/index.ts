@@ -1,4 +1,10 @@
 import croissantImage from "../assets/croissant.png";
+import { Playground } from "./components/Playground";
+
+const {
+    Scene, Color3, Vector3, UniversalCamera, DynamicTexture, StandardMaterial, MeshBuilder, PointerEventTypes, WebXRState
+} = BABYLON
+
 
 const canvas: HTMLCanvasElement = document.createElement("canvas");
 const ctx: CanvasRenderingContext2D = canvas.getContext("2d");
