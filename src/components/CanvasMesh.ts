@@ -1,65 +1,51 @@
 const _3D_PIXEL_SIZE = 1 / 64
-export class Playground {
-    public static async CreateScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement): Promise<BABYLON.Scene> {
-        const pg = new Playground()
-        // This creates a basic Babylon Scene object (non-mesh)
-        var scene = new BABYLON.Scene(engine);
+export class CanvasMesh {
+    // public static async CreateScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement): Promise<BABYLON.Scene> {
+    //     // This creates a basic Babylon Scene object (non-mesh)
+    //     var scene = new BABYLON.Scene(engine);
 
-        // This creates and positions a free camera (non-mesh)
-        var camera = new BABYLON.ArcRotateCamera("camera1", -1 * Math.PI / 2, Math.PI * 1 / 3, 5, new BABYLON.Vector3(0, 1, 0), scene)
-        camera.wheelPrecision = 100
+    //     // This creates and positions a free camera (non-mesh)
+    //     var camera = new BABYLON.ArcRotateCamera("camera1", -1 * Math.PI / 2, Math.PI * 1 / 3, 5, new BABYLON.Vector3(0, 1, 0), scene)
+    //     camera.wheelPrecision = 100
 
-        // This attaches the camera to the canvas
-        camera.attachControl(canvas, true);
+    //     // This attaches the camera to the canvas
+    //     camera.attachControl(canvas, true);
 
-        // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
-        var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
+    //     // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
+    //     var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
 
-        // Default intensity is 1. Let's dim the light a small amount
-        light.intensity = 0.7;
+    //     // Default intensity is 1. Let's dim the light a small amount
+    //     light.intensity = 0.7;
 
-        // Our built-in 'ground' shape. Params: name, width, depth, subdivs, scene
-        var ground = BABYLON.Mesh.CreateGround("ground1", 6, 6, 25, scene)
+    //     // Our built-in 'ground' shape. Params: name, width, depth, subdivs, scene
+    //     var ground = BABYLON.Mesh.CreateGround("ground1", 6, 6, 25, scene)
 
 
-        const imageCanvas = await pg.createImageCanvas(scene)
+    //     const imageCanvas = await this.createImageCanvas(scene)
 
-        const pizza = await pg.thinnizeCanvas(imageCanvas, scene)
-        pizza.position.y = 1
-        pizza.scaling.z = 32
-        scene.registerBeforeRender(() => {
-            pizza.rotateAround(pizza.position, pizza.up, Math.PI / 180)
-        })
+    //     const pizza = await pg.thinnizeCanvas(imageCanvas, scene)
+    //     pizza.position.y = 1
+    //     pizza.scaling.z = 32
+    //     scene.registerBeforeRender(() => {
+    //         pizza.rotateAround(pizza.position, pizza.up, Math.PI / 180)
+    //     })
 
-        // Put the texture on the ground too
-        var materialGround = new BABYLON.StandardMaterial('Mat', scene)
-        materialGround.diffuseTexture = imageCanvas
-        ground.material = materialGround
+    //     // Put the texture on the ground too
+    //     var materialGround = new BABYLON.StandardMaterial('Mat', scene)
+    //     materialGround.diffuseTexture = imageCanvas
+    //     ground.material = materialGround
         
-        return scene;
-    }
+    //     return scene;
+    // }
 
     async createImageCanvas(scene: BABYLON.Scene): Promise<BABYLON.DynamicTexture> {
         var canvas = new BABYLON.DynamicTexture('dyn', {width: 64, height: 64}, scene, false)
         var ctx = canvas.getContext() as CanvasRenderingContext2D
-
-        var grd = ctx.createLinearGradient(0, 0, 64, 64);
-        grd.addColorStop(0 / 6, "red");
-        grd.addColorStop(1 / 6, "orange");
-        grd.addColorStop(2 / 6, "#ffff00");
-        grd.addColorStop(3 / 6, "#008000");
-        grd.addColorStop(4 / 6, "#0000ff");
-        grd.addColorStop(5 / 6, "#4b0082");
-        grd.addColorStop(6 / 6, "#ee82ee");
-
-        ctx.fillStyle = grd
-        ctx.fillRect(0, 0, 64, 64)
-        
         ctx.font = "56px emoji"
         ctx.textBaseline = 'top'
         ctx.fillStyle = 'blue'
         // ctx.fillText("🌎", 0, 6)
-        ctx.fillText("💯", 6, 6)
+        ctx.fillText("🤚", 6, 6)
         ctx.fill
         
         // canvas.drawText("", 0, 0, '56px monospace', "green", "transparent", true, true)

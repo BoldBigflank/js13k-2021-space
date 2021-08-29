@@ -4,6 +4,7 @@
     <meta charset="utf-8"/>
     <title>JS13K TypeScript Webpack Starter Party</title>
     <style>
+      @font-face { font-family: emoji; src: url(//rawcdn.githack.com/xem/emoji/ebc09ff1b374c056046ec9f779c7e7a5d069197a/twemoji.ttf) }
       html, body {
         width: 100%;
         height: 100%;
@@ -21,9 +22,15 @@
       #game {
         background-color: #c28cd4;
       }
+
+      #renderCanvas {
+        width: 100%;
+        height: 100%;
+        touch-action: none;
+      }
     </style>
-    <!-- <script src="https://js13kgames.com/webxr-src/2021/babylon.js"></script> -->
-    <script src="https://preview.babylonjs.com/babylon.max.js"></script>
+    <script src="https://js13kgames.com/webxr-src/2021/babylon.js"></script>
+    <!-- <script src="https://preview.babylonjs.com/babylon.max.js"></script> -->
   </head>
   <body>
     <div id="intro" style="text-align:center;font-family:Helvetica, sans-serif;">

@@ -1,100 +1,51 @@
-import croissantImage from "../assets/croissant.png";
 import { Playground } from "./components/Playground";
+import { Cassettes } from "./components/Cassettes";
+import { Pointers } from './components/Pointers'
+import { Engine } from "babylonjs/Engines/engine";
+// const canvas: HTMLCanvasElement = document.getElementById('renderCanvas') as HTMLCanvasElement
+// const ctx: CanvasRenderingContext2D = canvas.getContext("2d");
+// const width = 320;
+// const height = 240;
 
-const {
-    Scene, Color3, Vector3, UniversalCamera, DynamicTexture, StandardMaterial, MeshBuilder, PointerEventTypes, WebXRState
-} = BABYLON
 
 
-const canvas: HTMLCanvasElement = document.createElement("canvas");
-const ctx: CanvasRenderingContext2D = canvas.getContext("2d");
-const MOVING_SPEED = 2;
-const width = 320;
-const height = 240;
+const init = async () => {
+	document.getElementById('intro').style.display = 'none'
+    const canvas = document.getElementById('renderCanvas') as HTMLCanvasElement
+    canvas.style.display = 'block'
+    const engine = new BABYLON.Engine(canvas, true)
+    engine.displayLoadingUI()
+	
+	// Set up the puzzle side
+	const cassettes = Cassettes.CreateCassettes()
+	console.log(cassettes)
 
-canvas.id = "game";
-canvas.width = width;
-canvas.height = height;
-const div = document.createElement("div");
-div.appendChild(canvas);
-document.body.appendChild(canvas);
+	const scene = await Playground.CreateScene(engine, canvas)
+	const xrDefault = await scene.createDefaultXRExperienceAsync({});
 
-const image = new Image();
-image.src = croissantImage;
+	// POINTER EVENTS
+	Pointers.AddPointerEvents(xrDefault.input, scene)
 
-const player: pos = {
-	x: width / 2,
-	y: height / 2
-};
+	// Register a render loop to repeatedly render the scene
+	engine.runRenderLoop(function () {
+		scene.render();
+	});
 
-const inputState: InputState = {
-	left: false,
-	right: false,
-	up: false,
-	down: false
-};
-
-function tick(t: number) {
-	requestAnimationFrame(tick);
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	if (inputState.left) player.x -= MOVING_SPEED;
-	if (inputState.right) player.x += MOVING_SPEED;
-	if (inputState.up) player.y -= MOVING_SPEED;
-	if (inputState.down) player.y += MOVING_SPEED;
-	player.x = clamp(player.x, 0, canvas.width - 16);
-	player.y = clamp(player.y, 0, canvas.height - 16);
-
-	ctx.drawImage(image, player.x, player.y);
+	// Watch for browser/canvas resize events
+	window.addEventListener("resize", function () {
+		engine.resize();
+	});
+	engine.hideLoadingUI()
+		
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'p') {
+            (scene.debugLayer.isVisible()) ? scene.debugLayer.hide() : scene.debugLayer.show()
+        }
+        return false
+    })
 }
 
-requestAnimationFrame(tick);
-
-window.addEventListener("keydown", (e: KeyboardEvent) => {
-	switch (e.key) {
-		case "ArrowLeft":
-			inputState.left = true;
-			break;
-		case "ArrowRight":
-			inputState.right = true;
-			break;
-		case "ArrowUp":
-			inputState.up = true;
-			break;
-		case "ArrowDown":
-			inputState.down = true;
-			break;
-	}
-});
-
-window.addEventListener("keyup", (e: KeyboardEvent) => {
-	switch (e.key) {
-		case "ArrowLeft":
-			inputState.left = false;
-			break;
-		case "ArrowRight":
-			inputState.right = false;
-			break;
-		case "ArrowUp":
-			inputState.up = false;
-			break;
-		case "ArrowDown":
-			inputState.down = false;
-			break;
-	}
-});
-
-function clamp(num: number, min: number, max: number): number {
-	return Math.min(Math.max(num, min), max);
-}
-
-interface InputState {
-	left: boolean;
-	right: boolean;
-	up: boolean;
-	down: boolean;
-}
-
-interface pos {
-	x: number;
-	y: number;
-}
+window.addEventListener('DOMContentLoaded', () => {
+	const b = document.getElementById('playButton')
+	b.onclick = init
+})
